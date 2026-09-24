@@ -1,11 +1,13 @@
 from dataclasses import dataclass
+from typing import Optional
+
 import pandas as pd
 
 @dataclass
 class DailyWeather:
     data: pd.DataFrame
-    latitude: float
-    longitude: float
-    elevation: float
-    timezone: str
+    latitude: Optional[float]
+    longitude: Optional[float]
+    elevation: Optional[float]
+    timezone: Optional[str]
 
