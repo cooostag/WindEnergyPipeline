@@ -16,10 +16,13 @@ import datetime
 #string date of today/tomorrow for parametric url
 
 def get_da_prices (target_date: datetime.date = None, bidzone: str = "DE-LU"):
-   #return 0
 
     yesterdaysdate= (datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     #todaysdate= datetime.datetime.now().strftime("%Y-%m-%d")
+
+    if target_date == None:
+        target_date = datetime.datetime.now().date() #todays prices
+
     day_after_target= (target_date + datetime.timedelta(days=1))
 
     base_url = "https://api.energy-charts.info/price"
