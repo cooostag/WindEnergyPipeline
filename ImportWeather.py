@@ -41,7 +41,9 @@ def get_target_day_weather(target_day: datetime.date = None):
     )
     return target_days_weather
 
+#test the function
 tomorrows_weather_ =     tomorrow = pd.Timestamp.today().normalize() + pd.Timedelta(days=1)
 target_days_weather = get_target_day_weather(tomorrows_weather_)
 
-print ("test")
+#print ("success")
+print("target_days_weather: ", target_days_weather)
