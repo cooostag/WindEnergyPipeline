@@ -11,3 +11,9 @@ class DailyWeather:
     elevation: Optional[float]
     timezone: Optional[str]
 
+
+class DA_PowerPrices:
+    data: pd.DataFrame
+    MarketArea: Optional [str]
+    Exchange: Optional [str]
+
