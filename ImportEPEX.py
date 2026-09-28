@@ -67,7 +67,10 @@ def get_da_prices (target_date: datetime.date = None, bidzone: str = "DE-LU"):
 tomorrow_ = (datetime.datetime.now() + datetime.timedelta(days=1)).date()
 tomorrow_str=tomorrow_.strftime("%Y-%m-%d")
 
-DA_prices = get_da_prices(tomorrow_, bidzone="DE-LU")
+today_= datetime.datetime.now().date()
+
+
+DA_prices = get_da_prices(today_, bidzone="DE-LU")
 
 #print ("target_date: ", tomorrow_str)
 print ("DA_prices: ", DA_prices)
