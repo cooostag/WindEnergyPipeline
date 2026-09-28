@@ -1,11 +1,9 @@
 #import weather data here
 
-from DataClasses import DailyWeather
+from DataClasses import *
 import pandas as pd
 import requests
 import datetime
-
-#TODO: Transform in function to be called from main
 
 def get_target_day_weather(target_day: datetime.date = None):
     #E:extract
@@ -32,7 +30,7 @@ def get_target_day_weather(target_day: datetime.date = None):
 
     #L:Load into final data object
 
-    target_days_weather = DailyWeather(
+    target_days_weather = ForecastWeather(
         data = df,
         latitude = data["latitude"],
         longitude = data["longitude"],
