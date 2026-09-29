@@ -1,6 +1,6 @@
 import pandas as pd
 
-from ImportWeather import tomorrows_weather as weather
+from ImportWeather import get_target_day_weather as weather
 
 
 def test_import_weather():

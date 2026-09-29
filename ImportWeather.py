@@ -7,7 +7,8 @@ import datetime
 
 def get_target_day_weather(target_day: datetime.date = None):
     #E:extract
-    url = "https://api.open-meteo.com/v1/forecast?latitude=53.5&longitude=9.9&minutely_15=wind_speed_80m,temperature_2m,precipitation&forecast_minutely_15=192&timezone=Europe%2FBerlin"
+    #url = "timezone=Europe%2FBerlin"
+    url = "https://api.open-meteo.com/v1/forecast?latitude=53.5&longitude=9.9&minutely_15=wind_speed_80m,temperature_2m,precipitation&forecast_minutely_15=192&past_minutely_15=192&timezone=Europe%2FBerlin"
     response = requests.get(url)
     response.raise_for_status()
 

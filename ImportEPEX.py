@@ -33,8 +33,6 @@ def get_da_prices (target_date: datetime.date = None, bidzone: str = "DE-LU"):
     }
 
     response_=requests.get( base_url, params=params)
-    #url = f"https://api.energy-charts.info/price?bzn=DE-LU&start={target_date}&end=2026-09-26"
-    #response = requests.get(url)
     response_.raise_for_status()
 
     #T:transform
@@ -54,7 +52,9 @@ def get_da_prices (target_date: datetime.date = None, bidzone: str = "DE-LU"):
     df = df[
         (df["timestamp"] >= target_date_pd) &
         (df["timestamp"] < target_date_pd + pd.Timedelta(days=1))
-    ]
+    ].set_index("timestamp")
+
+
 
     DA_prices = DA_PowerPrices(
         data = df,
