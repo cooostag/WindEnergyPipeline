@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 import pandas as pd
 
+#TODO: Insert direction logic in PPA parent class
+
+
 @dataclass
 class PPA:
     ppa_id: str

@@ -10,6 +10,8 @@ from ImportWeather import get_target_day_weather
 from Wgeneration import calculate_generation
 from PPAs import *
 
+#TODO: SUM the P&L
+
 #0. market results are published at 13 CET so I am introducing a if statement to allocate the target date properly
 if datetime.now(ZoneInfo("CET")).time() < time(13, 30):  #before 13:30 CET, use today as target date
     target_date = pd.Timestamp.today().normalize()
@@ -65,10 +67,10 @@ def PPA_valuation (PPA_contract: PPA, Asset_generation: pd.DataFrame, Market_pri
     df ["PPA_price"] = PPA_contract.price_mwh
 
     #compute revenue = generation * PPA price
-    df ["Revenue"] = 0.25*df["power_output"] * df["PPA_price"]
+    df ["Revenue"] = 0.25*df["power_output"] * df["PPA_price"] / 1000
 
     #compute P&L = revenue - (generation * market price)
-    df ["P&L"] = 0.25*(df["PPA_price"] - df["DA_price"]) * df["power_output"]
+    df ["P&L"] = 0.25*(df["PPA_price"] - df["DA_price"]) * df["power_output"] /1000
 
     return df
 
