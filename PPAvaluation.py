@@ -45,7 +45,7 @@ Fixed_PPA_Contract1 = FixedPricePPA_asProduced(
     ppa_end_date="2026-23-31",
     offtaker_name="Offtaker1",
     offtaker_credit_rating="AAA",
-    price_mwh=50.0,
+    price_mwh=50.0, #as for example a PPA fixed prices closed more than 5 years ago before Russia-UA war where this was a realistic price
     direction_type="sell",
     direction_multiplier=int(1)
 )
@@ -75,5 +75,6 @@ def PPA_valuation (PPA_contract: PPA, Asset_generation: pd.DataFrame, Market_pri
     return df
 
 Valuation_df = PPA_valuation (Fixed_PPA_Contract1, Wasset_targetday_generation, DA_prices.data)
+print (f"tomorrow´s {target_date.date()} P&L: {Valuation_df['P&L'].sum()}")
 
 print ("test")

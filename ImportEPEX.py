@@ -59,7 +59,7 @@ def get_da_prices (target_date: datetime.date = None, bidzone: str = "DE-LU"):
     DA_prices = DA_PowerPrices(
         data = df,
         marketarea= params ["bzn"],
-        Exchange = "EPEX SPOT"
+        exchange = "EPEX SPOT"
     )
     return DA_prices
 

@@ -14,7 +14,7 @@ def calculate_generation(
 
     df_generation = df.copy()
     wind_speed = df_generation["wind_speed_80m"]
-    df_generation["power_output"] = 0 #initialize the power output column = 0 and then changing values where there is output expected
+    df_generation["power_output"] = 0.0 #initialize the power output column = 0.0 (float) and then changing values where there is output expected
 
     #wind speed < than cut in speed
     mask = (wind_speed >= cut_in) & (wind_speed < rated_wind_speed)
