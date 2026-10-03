@@ -9,6 +9,11 @@ electricity prices.
 
 **Stage 2 --- in progress**
 
+------------------------------------------------------------------------
+## RUN Stage 1
+
+Run the script PPA valuation.py to observe the stage 1 results by default printed but it is possible to blend in the lines for a csv output.
+
 
 ------------------------------------------------------------------------
 

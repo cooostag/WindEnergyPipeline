@@ -2,6 +2,7 @@
 import pandas as pd
 from zoneinfo import ZoneInfo
 from datetime import datetime, time
+import openpyxl
 
 #import classes and functions from other files
 from DataClasses import *
@@ -9,8 +10,6 @@ from ImportEPEX import get_da_prices
 from ImportWeather import get_target_day_weather
 from Wgeneration import calculate_generation
 from PPAs import *
-
-#TODO: SUM the P&L
 
 #0. market results are published at 13 CET so I am introducing a if statement to allocate the target date properly
 if datetime.now(ZoneInfo("CET")).time() < time(13, 30):  #before 13:30 CET, use today as target date
@@ -77,4 +76,6 @@ def PPA_valuation (PPA_contract: PPA, Asset_generation: pd.DataFrame, Market_pri
 Valuation_df = PPA_valuation (Fixed_PPA_Contract1, Wasset_targetday_generation, DA_prices.data)
 print (f"tomorrow´s {target_date.date()} P&L: {Valuation_df['P&L'].sum()}")
 
-print ("test")
+# Save to an Excel file - Switched off by can be tested
+#Valuation_df.to_csv("dayAheadP&L.csv", index=True)
+
