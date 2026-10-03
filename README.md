@@ -4,21 +4,15 @@
 
 **Stage 1 --- completed**
 
-This project was built as a compact end-to-end prototype for valuing the
-economics of a renewable power asset under a Power Purchase Agreement
-(PPA).
+End-to-end PPA valuation using renewable generation and Day-Ahead
+electricity prices.
 
-Stage 1 is intentionally simple: it connects weather data, renewable
-generation modelling, electricity market prices and a basic PPA
-valuation into one reproducible pipeline.
+**Stage 2 --- in progress**
 
-The Stage 1 scope is now considered **complete and terminated**. The
-next steps listed below are potential extensions rather than unfinished
-Stage 1 requirements.
 
 ------------------------------------------------------------------------
 
-## 1. Objective
+## 1.1 Objective
 
 The purpose of the project is to answer a simple energy-market question:
 
@@ -48,9 +42,9 @@ Generation forecast
 
 ------------------------------------------------------------------------
 
-## 2. Stage 1 components
+## 1.2 Stage 1 components
 
-### 2.1 Weather data
+### 1.2.1 Weather data
 
 Weather forecast data is retrieved at 15-minute resolution from open-meteo
 https://api.open-meteo.com/v1/forecast
@@ -66,7 +60,7 @@ timestamps.
 
 ------------------------------------------------------------------------
 
-### 2.2 Wind generation model
+### 1.2.2 Wind generation model
 
 A simplified wind-turbine power curve converts wind speed into
 electrical output.
@@ -87,18 +81,17 @@ multiple turbines.
 
 ------------------------------------------------------------------------
 
-### 2.3 Day-Ahead market prices
+### 1.2.3 Day-Ahead market prices
 
 Day-Ahead electricity prices are retrieved for the DE-LU market area from energy-charts:
 https://api.energy-charts.info/price
 
-The prices are aligned to the same 15-minute time grid as the generation
-forecast.
+The project aims to align all timeseries to a 15 min resolution, this is in line with the German Day-Ahead market settlement period.
 
 
 ------------------------------------------------------------------------
 
-### 2.4 PPA
+### 1.2.4 PPA
 
 Stage 1 uses a simple fixed-price PPA.
 
@@ -115,7 +108,7 @@ introduced later through specialised classes.
 
 ------------------------------------------------------------------------
 
-## 3. Valuation calculation
+## 1.2.3 Valuation calculation
 
 The central output of Stage 1 is the valuation DataFrame.
 
@@ -162,7 +155,7 @@ For a seller with a fixed-price PPA:
 
 ------------------------------------------------------------------------
 
-## 4. Aggregating the valuation
+## 1.2.4 Aggregating the valuation
 
 Once each interval contains a correctly calculated euro value, the total
 daily P&L can simply be calculated as:
@@ -193,7 +186,7 @@ energy units.
 
 ------------------------------------------------------------------------
 
-## 6. Why the timestamp is an index
+## 1.2.5 Why the timestamp is an index
 
 The valuation DataFrame uses the timestamp as its index.
 
@@ -221,7 +214,7 @@ preferred.
 
 ------------------------------------------------------------------------
 
-# Stage 1 architecture
+# 1.3 Stage 1 architecture
 
 A simplified conceptual architecture is:
 
@@ -281,66 +274,81 @@ WIP
 
 ------------------------------------------------------------------------
 
-# Stage 2 --- potential improvements
+# 2. Stage 2 --- in progress
 
-Stage 1 intentionally stops before introducing the complexity normally
-required for a more realistic renewable trading / PPA valuation model.
+------------------------------------------------------------------------
+# 2.1 Market forward curve
 
-Possible next stages include the following.
+Build a German power forward curve from EEX futures data.
 
-## 1. More realistic generation modelling
+The current prototype uses a manually collected market snapshot due to
+limited access to historical EEX derivatives data.
 
-Replace the simplified power curve with more realistic ones
+Current implementation:
+- Monthly futures
+- Yearly futures
 
+Potential extension:
+- Quarterly futures
+- Weekly / shorter-term maturities
+
+The forward curve is represented as a daily market observation
+and is used as the market basis for forward PPA valuation. The forward curve is also computed on daily basis and the resolution of the project switches from 15-min to daily from d+2, where DA prices are not available. 
+
+Historical forward curves are currently outside the project scope due to
+limited access to historical EEX derivatives data. The architecture is
+designed so that historical observations can be integrated when
+available.
 
 ------------------------------------------------------------------------
 
-## 2. Actual versus forecast generation
+# 2.2 Stochastic market-price modelling
 
-Separate:
+Develop a stochastic model for German power forward prices starting from the forward curve computed in 2.1.
 
-``` text
-Forecast generation
-Actual generation
-```
+Potential components:
 
+- Define a volatility structure across delivery periods
+- Define correlations between delivery periods
+- Generate correlated stochastic forward-price scenarios
+- Compare different stochastic assumptions/models
+
+Where historical market data is unavailable, parameters will initially
+be informed by relevant academic literature and explicitly documented
+as assumptions.
+------------------------------------------------------------------------
+# 2.3 PPA mark-to-market
+
+Extend the PPA valuation from Day-Ahead prices to forward market prices.
+
+- Revalue the PPA against the current forward curve
+- Calculate PPA mark-to-market (MtM)
+- Calculate sensitivity to changes in forward prices
 
 ------------------------------------------------------------------------
+# 2.4 MonteCarlo valuation & market risk
 
-## 3. Imbalance modelling
+Use the stochastic forward-price scenarios to:
 
-Introduce imbalance costs and revenues.
+- Revalue the PPA under each scenario
+- Produce a simulated P&L distribution
+- Calculate VaR
+- Calculate Expected Shortfall
+- Analyse sensitivity to stochastic model assumptions
+------------------------------------------------------------------------
+# 2.5 Market risk - OPTIONAL
+Historical P&L distribution
+VaR
+Expected Shortfall
+Stress scenarios
 
 ------------------------------------------------------------------------
+# 2.6 Renewable capture pricing - separate analysis
 
-## 4. More sophisticated PPA contracts
+Generation-weighted market price
 
-The current fixed-price PPA can be extended with different contract
-structures.
+Capture price vs Baseload
 
-------------------------------------------------------------------------
+Capture-price factor
 
-## 5. Market-price risk
-
-The current valuation uses a single Day-Ahead price scenario.
-
-A more advanced model to be evaluated:
-
-------------------------------------------------------------------------
-
-## 6. P&L and risk analytics
-
-The next level could introduce...
-
-------------------------------------------------------------------------
-
-## 7. Data quality and production robustness
-
-The prototype can eventually include
-
-------------------------------------------------------------------------
-
-## 8. Testing
-
-A production-oriented version should introduce unit and integration
-tests.
+PPA pricing
